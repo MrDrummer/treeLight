@@ -1,0 +1,1 @@
+ssh -l pi -i .ssh/pi_id_rsa 10.100.100.211
