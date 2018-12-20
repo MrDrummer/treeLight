@@ -1,1 +1,14 @@
 ssh -l pi -i .ssh/pi_id_rsa 10.100.100.211
+~/arduino-cli
+arduino:avr:mega
+
+~/arduino-cli compile -b arduino:avr:mega ~/Documents/treeLight/sketch
+
+~arduino-cli lib search "Complete Name"
+~arduino-cli lib install "Complete Name"
+
+
+~/arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:mega ~/Documents/treeLight/sketch -t
+
+
+~/arduino-cli compile -b arduino:avr:mega ~/Documents/treeLight/sketch && ~/arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:mega ~/Documents/treeLight/sketch -t
