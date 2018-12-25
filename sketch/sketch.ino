@@ -33,11 +33,11 @@ void setup() {
   Serial.begin(9600);
 //  turnPixelsOff(wait);
   strip.begin();
-  strip.setBrightness(64);
+  strip.setBrightness(32);
   strip.show(); // Initialize all pixels to 'off'
-  strip2.begin();
-  strip2.setBrightness(64);
-  strip2.show(); // Initialize all pixels to 'off'
+//  strip2.begin();
+//  strip2.setBrightness(64);
+//  strip2.show(); // Initialize all pixels to 'off'
   
 }
 
@@ -49,23 +49,20 @@ void loop() {
   colorWipe(strip.Color(255, 0, 0), 50); // Red
   colorWipe(strip.Color(0, 255, 0), 50); // Green
   colorWipe(strip.Color(0, 0, 255), 50); // Blue
-  strip2_colorWipe(strip2.Color(255, 0, 0), 50); // Red
-  strip2_colorWipe(strip2.Color(0, 255, 0), 50); // Green
-  strip2_colorWipe(strip2.Color(0, 0, 255), 50); // Blue
-//colorWipe(strip.Color(0, 0, 0, 255), 50); // White RGBW
-  // Send a theater pixel chase in...
-  // theaterChase(strip.Color(127, 127, 127), 50); // White
-  theaterChase(strip.Color(127, 0, 0), 50); // Red
-  theaterChase(strip.Color(0, 0, 127), 50); // Blue
-  strip2_theaterChase(strip2.Color(127, 0, 0), 50); // Red
-  strip2_theaterChase(strip2.Color(0, 0, 127), 50); // Blue
+  colorWipe(strip.Color(255, 0, 0), 50); // Red
+  colorWipe(strip.Color(0, 255, 0), 50); // Green
+  colorWipe(strip.Color(0, 0, 255), 50); // Blue
+
+  theaterChase(strip.Color(127, 0, 0), 100); // Red
+  theaterChase(strip.Color(127, 0, 0), 100); // Red
+  theaterChase(strip.Color(0, 127, 0), 100); // green
+  theaterChase(strip.Color(0, 127, 0), 100); // green
+  theaterChase(strip.Color(0, 0, 127), 100); // Blue
+  theaterChase(strip.Color(0, 0, 127), 100); // Blue
 
   rainbow(40);
   rainbowCycle(40);
-  theaterChaseRainbow(50);
-  strip2_rainbow(40);
-  strip2_rainbowCycle(40);
-  strip2_theaterChaseRainbow(50);
+  theaterChaseRainbow(100);
 }
 
 void getPixelColours() {
