@@ -24,11 +24,6 @@ Adafruit_NeoPixel strip2 = Adafruit_NeoPixel(60, PIN_2, NEO_GRB + NEO_KHZ800);
 uint16_t wait = 1000;
 
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-  #if defined (__AVR_ATtiny85__)
-    if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-  #endif
-  // End of trinket special code
   
   Serial.begin(9600);
 //  turnPixelsOff(wait);
