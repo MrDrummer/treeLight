@@ -6,7 +6,7 @@
       |  {{ this.responseType }}
     div
       strong Message:
-      |  {{ this.response }}
+      pre {{ this.response }}
 </template>
 
 <script>
@@ -31,31 +31,31 @@ export default {
   mounted () {
     this.socket = new WebSocket(`ws://${window.location.hostname}:8041/`)
 
-    this.socket.onopen = (event) => {
+    this.socket.onopen = event => {
       console.log('websocket opened', event)
       const json = JSON.stringify({ timestamp: new Date(), message: 'ready' })
       this.socket.send(json)
     }
 
-    this.socket.onerror = (event) => {
+    this.socket.onerror = event => {
       console.error('Socket Error:', event)
-      this.setOutput('error', 'Socket Error:', JSON.stringify(event, 2))
+      this.setOutput('error', JSON.stringify(event, null, 2))
     }
 
-    this.socket.onmessage = (event) => {
-      let response = (JSON.parse(event.data))
+    this.socket.onmessage = event => {
+      let response = JSON.parse(event.data)
       if (response.data) {
-        const data = response.data
-        this.setOutput('success', data)
+        console.log(response)
+        this.setOutput('success', JSON.stringify(response, null, 2))
       } else {
         this.setOutput('warn', 'Data was not in a valid format!')
         console.error('Received data I do not recognise!', event)
       }
     }
 
-    this.socket.onclose = (event) => {
-      this.setOutput('warn', 'Socket Closed:')
-      console.log('Socket Closed:', [], JSON.stringify(event, 2))
+    this.socket.onclose = event => {
+      console.log('Socket Closed:', event)
+      this.setOutput('warn', JSON.stringify(event, null, 2))
     }
   },
   beforeDestroy () {
