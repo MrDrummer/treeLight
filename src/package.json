@@ -1,0 +1,21 @@
+{
+  "name": "treelight",
+  "version": "0.1.0",
+  "description": "For decorating the tree at work",
+  "main": "lib/index.js",
+  "repository": "https://github.com/MrDrummer/treeLight.git",
+  "author": "MrDrummer25 <mrdrummer.programming@hotmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "^4.13.4",
+    "python-shell": "^1.0.6",
+    "ws": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.12",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.5.3"
+  }
+}
