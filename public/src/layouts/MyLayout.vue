@@ -98,6 +98,43 @@ export default {
     return {
       leftDrawerOpen: false
     }
+  },
+  methods: {
+    updateValues (data) {
+      console.log('data', data)
+    }
+  },
+  mounted () {
+    const socket = new WebSocket(`ws://${window.location.hostname}:8041/`)
+    socket.onopen = (event) => {
+      console.log('websocket opened', event)
+      var json = JSON.stringify({ message: 'ready' })
+      socket.send(json)
+    }
+
+    socket.onerror = (event) => {
+      console.error('Socket Error:', event)
+    }
+
+    socket.onmessage = (event) => {
+      console.log(event)
+      let response = (JSON.parse(event.data))
+      if (response.data) {
+        const data = response.data
+        this.updateValues(data)
+      } else {
+        console.error('Received data I do not recognise!', event)
+      }
+    }
+
+    socket.onclose = (event) => {
+      console.log('Socket Closed:', event)
+    }
+
+    window.addEventListener('beforeunload', () => {
+      console.log('websocket closed')
+      socket.close()
+    })
   }
 }
 </script>
