@@ -7,6 +7,14 @@
     div
       strong Message:
       pre {{ this.response }}
+    q-btn(
+      label="rainbow"
+      @click="setPattern('rainbow')"
+    )
+    q-btn(
+      label="strip"
+      @click="setPattern('strip')"
+    )
 </template>
 
 <script>
@@ -26,6 +34,9 @@ export default {
     setOutput (type, message) {
       this.responseType = type
       this.response = message
+    },
+    setPattern (value) {
+      this.socket.send(JSON.stringify({ timestamp: new Date(), type: value }))
     }
   },
   mounted () {
@@ -39,14 +50,14 @@ export default {
 
     this.socket.onerror = event => {
       console.error('Socket Error:', event)
-      this.setOutput('error', JSON.stringify(event, null, 2))
+      this.setOutput('error', event)
     }
 
     this.socket.onmessage = event => {
       let response = JSON.parse(event.data)
       if (response.data) {
         console.log(response)
-        this.setOutput('success', JSON.stringify(response, null, 2))
+        this.setOutput('success', response)
       } else {
         this.setOutput('warn', 'Data was not in a valid format!')
         console.error('Received data I do not recognise!', event)
@@ -55,7 +66,7 @@ export default {
 
     this.socket.onclose = event => {
       console.log('Socket Closed:', event)
-      this.setOutput('warn', JSON.stringify(event, null, 2))
+      this.setOutput('warn', event)
     }
   },
   beforeDestroy () {
