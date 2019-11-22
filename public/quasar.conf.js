@@ -17,15 +17,12 @@ module.exports = function (ctx) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
+      'roboto-font',
+      // 'material-icons', // optional, you are not bound to it
       // 'ionicons-v4',
-      // 'mdi-v4',
+      'mdi-v3'
       // 'fontawesome-v5',
-      // 'eva-icons',
-      // 'themify',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
-      'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      // 'eva-icons'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -46,7 +43,8 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [],
+      iconSet: 'mdi-v3'
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -55,7 +53,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
       // analyze: true,
@@ -63,24 +61,35 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
-        cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/,
-          options: {
-            formatter: require('eslint').CLIEngine.getFormatter('stylish')
-          }
-        })
+      // extendWebpack (cfg) {
+      //   cfg.module.rules.push({
+      //     enforce: 'pre',
+      //     test: /\.(js|vue)$/,
+      //     loader: 'eslint-loader',
+      //     exclude: /node_modules/,
+      //     options: {
+      //       formatter: require('eslint').CLIEngine.getFormatter('stylish')
+      //     }
+      //   })
+      // }
+      chainWebpack (chain, { isClient }) {
+        chain.module.rule('pug')
+          .test(/\.pug$/)
+          .use('pug-loader').loader('pug-plain-loader')
+
+        chain.module.rule('eslint')
+          .enforce('pre')
+          .test(/\.(js|vue)$/)
+          .exclude.add(/node_modules|\.md\.js/).end()
+          .use('eslint-loader').loader('eslint-loader')
       }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       // https: true,
-      // port: 8080,
-      open: true // opens browser window automatically
+      port: 8040,
+      open: false // opens browser window automatically
     },
 
     // animations: 'all', // --- includes all animations
