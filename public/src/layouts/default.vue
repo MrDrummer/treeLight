@@ -3,7 +3,7 @@
     q-header(elevated='')
       q-toolbar
         q-toolbar-title
-          | Quasar App
+          | Over The Top Light Control Panel
         div Quasar v{{ $q.version }}
     q-page-container
       router-view

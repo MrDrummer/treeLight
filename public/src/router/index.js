@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueTimers from 'vue-timers'
 
 import routes from './routes'
 
+Vue.use(VueTimers)
 Vue.use(VueRouter)
 
 /*
