@@ -1,9 +1,12 @@
 import WebSocket from "ws"
 import {
-  ESocketCommand, ESocketState, ISocket, ISocketCommand, ISocketInfo, ISocketType
+  ESocketCommand, ESocketPattern, ESocketState, ISocket, ISocketCommand, ISocketInfo, ISocketType
 } from "./models"
 
-let globalCommand: ISocketCommand
+let globalCommand: ISocketCommand = {
+  command: ESocketCommand.SET_PATTERN,
+  value: ESocketPattern.RAINBOW
+}
 export const socket = new WebSocket.Server({ port: 8041 })
 
 socket.on("connection", (ws) => {
@@ -15,11 +18,13 @@ socket.on("connection", (ws) => {
       if (isCommand(parsed.data)) {
         console.log("IS A COMMAND")
         const command = getCommandFromData(parsed.data)
+        // SET NEW LIGHT PATTERN HERE
         broadcast(ISocketType.COMMAND, command)
         globalCommand = command
+        console.log("NEW STATE:", globalCommand)
       } else if (parsed.data.message === "ready") {
         console.log("globalCommand :", globalCommand)
-        if (isCommand(globalCommand)) sendMessage(ws, ISocketType.MESSAGE, globalCommand)
+        if (isCommand(globalCommand)) sendMessage(ws, ISocketType.COMMAND, globalCommand)
       }
     } catch (e) {
       console.error("issue parsing data", e)
