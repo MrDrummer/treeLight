@@ -1,12 +1,12 @@
 <template lang="pug">
   q-page
-    h3 Data Received
-    div
-      strong State:
-      |  {{ this.response.state }}
-    div
-      strong Message:
-      pre {{ this.response.message }}
+    //- h3 Data Received
+    //- div
+    //-   strong State:
+    //-   |  {{ this.response.state }}
+    //- div
+    //-   strong Message:
+    pre {{ this.response.message }}
     q-btn-toggle(
       v-model="pattern"
       toggle-color="primary"
@@ -28,7 +28,9 @@ export default {
       pattern: '',
       patterns: [
         { label: 'Rainbow', value: 'rainbow' },
-        { label: 'Strip', value: 'strip' }
+        { label: 'Twinkle', value: 'twinkle' },
+        { label: 'Fade', value: 'fade' },
+        { label: 'Chase', value: 'chase' }
       ]
     }
   },
@@ -58,12 +60,14 @@ export default {
       }
     },
     parseCommand (command) {
+      console.log('parseCommand', command)
       if (command.command === 'setPattern') this.pattern = command.value
     },
     initSocket () {
       this.socket = new WebSocket(`ws://${window.location.hostname}:8041/`)
 
       this.socket.onopen = event => {
+        console.info('=================')
         console.info('WebSocket Opened!')
         this.sendMessage('message', { message: 'ready', type: 'info' })
       }
