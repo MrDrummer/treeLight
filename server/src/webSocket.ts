@@ -8,22 +8,22 @@ let globalCommand: ISocketCommand = {
   value: ESocketPattern.RAINBOW
 }
 export const socket = new WebSocket.Server({ port: 8041 })
+import { serial } from "./serial"
 
 socket.on("connection", (ws) => {
   ws.on("message", (message: string) => {
-    console.log("RECEIVED:", message)
+    // console.log("RECEIVED:", message)
     try {
       const parsed = parseData(message)
-      console.log("parsed :", parsed)
+      // console.log("parsed :", parsed)
       if (isCommand(parsed.data)) {
-        console.log("IS A COMMAND")
+        // console.log("IS A COMMAND")
         const command = getCommandFromData(parsed.data)
         // SET NEW LIGHT PATTERN HERE
-        broadcast(ISocketType.COMMAND, command)
-        globalCommand = command
-        console.log("NEW STATE:", globalCommand)
+        setNewCommand(command)
       } else if (parsed.data.message === "ready") {
-        console.log("globalCommand :", globalCommand)
+        console.log(`New connection, sending initial command "${ globalCommand.value }"`)
+        // console.log("globalCommand :", globalCommand)
         if (isCommand(globalCommand)) sendMessage(ws, ISocketType.COMMAND, globalCommand)
       }
     } catch (e) {
@@ -39,8 +39,19 @@ socket.on("connection", (ws) => {
   ws.send(JSON.stringify({ timestamp: new Date(), data: "Live Update!" }))
 })
 
-function isCommand (data: ISocketInfo | ISocketCommand): data is ISocketCommand {
-  console.log("typeof data :", data)
+export const setNewCommand = (command: ISocketCommand) => {
+  serial.write(command.value, (error) => {
+    if (error) {
+      console.error("setNewCommand: There was an error", error)
+    }
+    broadcast(ISocketType.COMMAND, command)
+    globalCommand = command
+    console.log("NEW STATE:", globalCommand.value)
+  })
+}
+
+const isCommand = (data: ISocketInfo | ISocketCommand): data is ISocketCommand => {
+  // console.log("typeof data :", data)
   return typeof data === "object" && data.hasOwnProperty("command") && data.hasOwnProperty("value")
 }
 
@@ -77,6 +88,6 @@ const sendMessage = (ws: WebSocket, type: ISocketType, data: ISocketInfo | ISock
     type,
     data: msg
   }
-  console.log("SENDING", assembled)
+  // console.log("SENDING", assembled)
   ws.send(JSON.stringify(assembled))
 }
