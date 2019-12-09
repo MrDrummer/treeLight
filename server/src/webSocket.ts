@@ -40,7 +40,21 @@ socket.on("connection", (ws) => {
 })
 
 export const setNewCommand = (command: ISocketCommand) => {
-  serial.write(command.value, (error) => {
+  let cmdVal = "0"
+  switch (command.value) {
+    case ESocketPattern.WIPE:
+      cmdVal = "1"
+      break
+    case ESocketPattern.CHASE:
+      cmdVal = "2"
+      break
+    case ESocketPattern.RAINBOW:
+      cmdVal = "3"
+      break
+    default:
+      break
+  }
+  serial.write(cmdVal, (error) => {
     if (error) {
       console.error("setNewCommand: There was an error", error)
     }

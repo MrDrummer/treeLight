@@ -3,6 +3,8 @@ export enum ESocketCommand {
 }
 
 export enum ESocketPattern {
+  WIPE = "wipe",
+  CHASE = "chase",
   RAINBOW = "rainbow"
 }
 export enum ESocketState {
