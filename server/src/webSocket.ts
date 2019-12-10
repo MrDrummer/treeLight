@@ -40,6 +40,7 @@ socket.on("connection", (ws) => {
 })
 
 export const setNewCommand = (command: ISocketCommand) => {
+  console.log("command.value", command.value)
   let cmdVal = "0"
   switch (command.value) {
     case ESocketPattern.WIPE:
@@ -54,13 +55,15 @@ export const setNewCommand = (command: ISocketCommand) => {
     default:
       break
   }
+  console.log("cmdVal", cmdVal)
   serial.write(cmdVal, (error) => {
     if (error) {
       console.error("setNewCommand: There was an error", error)
+    } else {
+      broadcast(ISocketType.COMMAND, command)
+      globalCommand = command
+      console.log("NEW COMMAND VALUE:", globalCommand.value)
     }
-    broadcast(ISocketType.COMMAND, command)
-    globalCommand = command
-    console.log("NEW STATE:", globalCommand.value)
   })
 }
 

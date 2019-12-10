@@ -6,4 +6,4 @@ echo Compiling
 
 echo =================
 echo Uploading
-~/arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:mega ~/Documents/treeLight/controller -t
+~/arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:mega ~/Documents/treeLight/controller -t -v

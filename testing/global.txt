@@ -1,0 +1,2 @@
+export PATH=$PATH:~/.config/yarn/global/node_modules/pm2/bin
+export PATH=$PATH:~/.config/yarn/global/node_modules/@quasar/cli/bin
