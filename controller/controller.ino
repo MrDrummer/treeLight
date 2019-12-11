@@ -76,6 +76,7 @@ bool checkForInterrupt()
     mode = mode * (Serial.read() - '0'); //conveting the value of chars to integer
     Serial.println("=============");
     Serial.println(mode);
+    return true;
     // switch (r) {
     //   case "wipe":
     //     mode = 1
@@ -94,6 +95,7 @@ bool checkForInterrupt()
   else
   {
     Serial.println("No serial Buffer");
+    return false;
   }
 }
 
