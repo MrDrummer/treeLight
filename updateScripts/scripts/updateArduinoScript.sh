@@ -1,9 +1,9 @@
 #!/bin/bash
-
 echo =================
 echo Compiling
-~/arduino-cli compile -b arduino:avr:mega ~/Documents/treeLight/controller
+~/arduino-cli compile -b arduino:avr:mega /home/pi/Documents/treeLight/controller
 
 echo =================
 echo Uploading
-~/arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:mega ~/Documents/treeLight/controller -t
+~/arduino-cli upload -p /dev/ttyACM1 -b arduino:avr:mega /home/pi/Documents/treeLight/controller -t -v
+
